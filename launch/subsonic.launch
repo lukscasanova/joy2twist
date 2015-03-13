@@ -1,9 +1,7 @@
 <launch>
 
  <!-- Joy2Vero Node-->
-  <node pkg="joy2vero" type="joy2vero_node" name="joy2vero">
-	<rosparam file = "$(find joy2vero)/launch/joy2vero_params.yaml" />
-	<remap from="car_command" to="verocarfreedom/car_command"/>
+  <node pkg="joy2twist" type="joy2twist_node" name="joy2twist">
   </node>
 
   <!-- Axes -->

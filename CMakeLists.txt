@@ -107,7 +107,7 @@ add_executable(joy2twist_node src/joy2twist.cpp)
 
 ## Specify libraries to link a library or executable target against
  target_link_libraries(joy2twist_node
-   ${catkin_LIBRARIES
+   ${catkin_LIBRARIES}
  )
 
 

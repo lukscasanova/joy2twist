@@ -1,21 +1,9 @@
 #include <ros/ros.h>
-#include <verocarfreedomdefs_msgs/CarCommand.h>
-	
+#include <geometry_msgs/Twist.h>
+
 #include <sensor_msgs/Joy.h>
 
-#define CYCLE 200
-#define PERIODO 2
-#define FAIXA_MAX_SPEED 0.8 // A partir de quantos % da velocidade máxima o steerAngle deve ser limitado
-
-#define CARFREEDOM_MAX_SPEED_FORWARD_M_S 10
-#define CARFREEDOM_MAX_SPEED_REVERSE_M_S 10
-#define CARFREEDOM_MAX_STEERING_ANGLE_DEG 25
-#define CARFREEDOM_MAX_STEERING_ANGLE_AT_MAX_SPEED_DEG 20
-
-#define CARFREEDOM_MAX_JOYSTICK_FORWARD 1023
-#define CARFREEDOM_MAX_JOYSTICK_REVERSE 0
-#define CARFREEDOM_MAX_JOYSTICK_LEFT 0
-#define CARFREEDOM_MAX_JOYSTICK_RIGHT 1023
+#define FAIXA_MAX_SPEED 500
 
 
 
@@ -112,7 +100,7 @@ void LimitsInit (){
   
 } // LimitsInit
 
-void Joy2Vero::AtualizaComandoJoystick (double raw_linear, double raw_angle){
+void Joy2Twist::AtualizaComandoJoystick (double raw_linear, double raw_angle){
 	cmd_vel.linear.x=raw_linear;
 	cmd_vel.linear.y=0.0;
 	cmd_vel.linear.z=0.0;
@@ -123,7 +111,7 @@ void Joy2Vero::AtualizaComandoJoystick (double raw_linear, double raw_angle){
 } // AtualizaComandoJoystick
 
 
-Joy2Vero::Joy2Vero():
+Joy2Twist::Joy2Twist():
   linear_(1),
   angular_(2)
 {
@@ -136,14 +124,14 @@ Joy2Vero::Joy2Vero():
 
   // Alterar para publicar mensagens do tipo CarCommand
  //vel_pub_ = nh_.advertise<turtlesim::Velocity>("turtle1/command_velocity", 1);
- cmd_vel_pub_ = nh_.advertise<geometry_msgs/Twist>("cmd_vel", 1);
+ cmd_vel_pub_ = nh_.advertise<geometry_msgs::Twist>("cmd_vel", 1);
 
 
-  joy_sub_ = nh_.subscribe<sensor_msgs::Joy>("joy", 10, &Joy2Vero::joyCallback, this);
+  joy_sub_ = nh_.subscribe<sensor_msgs::Joy>("joy", 10, &Joy2Twist::joyCallback, this);
 
 }
 
-void Joy2Vero::joyCallback(const sensor_msgs::Joy::ConstPtr& joy)
+void Joy2Twist::joyCallback(const sensor_msgs::Joy::ConstPtr& joy)
 {
 // Declara mensagens do tipo CarCommand e preencher com os ados do leitor
 

@@ -1,5 +1,5 @@
 <launch>
  	<include file="$(find joy2twist)/launch/joy.launch" />
- 	<include file="$(find joy2twist)/launch/multilaser.launch" />
+ 	<include file="$(find joy2twist)/launch/subsonic.launch" />
 </launch>
 
