@@ -26,12 +26,11 @@ private:
   
   ros::NodeHandle nh_;
 
-  int linear_, angular_, dforward_, dbackward_, dright_, dleft_, zerovel_;
+  int linear_, angular_;
   double l_scale_, a_scale_;
   geometry_msgs::Twist cmd_vel;
   ros::Publisher cmd_vel_pub_;
   ros::Subscriber joy_sub_;
-  bool analog_;
   
 };
 
@@ -119,16 +118,10 @@ Joy2Twist::Joy2Twist():
 	std::string vel_topic;
   nh_.param("axis_linear", linear_, linear_);
   nh_.param("axis_angular", angular_, angular_);
-  nh_.getParam("dforward", dforward_);
-  nh_.getParam("dbackward", dbackward_);
-  nh_.getParam("dright", dright_);
-  nh_.getParam("dleft", dleft_);
-  nh_.getParam("zerovel", zerovel_);  
   nh_.param("scale_angular", a_scale_, a_scale_);
   nh_.param("scale_linear", l_scale_, l_scale_);
-	nh_.param<std::string>("vel_topic", vel_topic, "cmd_vel"); 
+	nh_.param<std::string>("~vel_topic", vel_topic, "cmd_vel"); 
 
-  analog_=true;
   // Alterar para publicar mensagens do tipo CarCommand
  //vel_pub_ = nh_.advertise<turtlesim::Velocity>("turtle1/command_velocity", 1);
  cmd_vel_pub_ = nh_.advertise<geometry_msgs::Twist>(vel_topic, 1);
@@ -141,20 +134,10 @@ Joy2Twist::Joy2Twist():
 void Joy2Twist::joyCallback(const sensor_msgs::Joy::ConstPtr& joy)
 {
 // Declara mensagens do tipo CarCommand e preencher com os ados do leitor
-  double linear, angular;
-  
-  if(analog_){
-    ROS_INFO_STREAM("\nLinear: " << joy->axes[linear_] << "\nAngular: " << joy->axes[angular_]);
-    linear=joy->axes[linear_];
-    angular=joy->axes[angular_];
-  }else{
-    linear=joy->buttons[dforward_]-joy->buttons[dbackward_];
-    angular=joy->buttons[dright_]-joy->buttons[dleft_];
-    if(joy->buttons[zerovel_]) {
-      linear=angular=0.0;
-    }
-  }
-  AtualizaComandoJoystick(l_scale_*linear,a_scale_*angular);
+
+
+  ROS_INFO_STREAM("\nLinear: " << joy->axes[linear_] << "\nAngular: " << joy->axes[angular_]);
+  AtualizaComandoJoystick(l_scale_*joy->axes[linear_],a_scale_*joy->axes[angular_]);
   cmd_vel_pub_.publish(cmd_vel);
 }
 

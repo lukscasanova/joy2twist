@@ -1,0 +1,11 @@
+<launch>
+ 	<include file="$(find gazebo_ros)/launch/pioneerIA.launch"/>
+ 	<group ns="pioneer2dx">
+ 	<!--include file="$(find joy2twist)/launch/joy2twist.launch" /-->
+ 	<include file="$(find joy2twist)/launch/gmapping.launch" />
+  <node  pkg="tf" type="static_transform_publisher" name="base_to_hokuyo" args="0 0 1.0 0 0 0 base_link hokuyo_link 100"/>
+
+  <include file="$(find move_base)/launch/move_base.launch" />
+	</group>
+
+</launch>

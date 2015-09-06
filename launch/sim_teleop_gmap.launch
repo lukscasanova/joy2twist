@@ -1,0 +1,13 @@
+<launch>
+ <include file="$(find gazebo_ros)/launch/pioneerIA.launch">
+  <arg name="gui" value="true" />
+ </include>
+ <group ns="pioneer2dx">
+<!--   <include file="$(find joy2twist)/launch/joy2twist.launch" /> -->
+ 	<include file="$(find joy2twist)/launch/gmapping.launch" />
+  <node  pkg="tf" type="static_transform_publisher" name="base_to_hokuyo" args="0 0 1.0 0 0 0 base_footprint hokuyo_link 100"/>
+  <include file="$(find robochair)/launch/move_base.launch" />
+<!--   <include file="$(find robochair)/launch/amcl_diff.launch" /> -->
+  <node type="rviz" pkg="rviz" name="rqt_rviz_node" args="-d /home/lukscasanova/.rviz/pioneer.rviz"/>
+ </group>
+</launch>

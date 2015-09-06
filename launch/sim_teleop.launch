@@ -1,0 +1,8 @@
+<launch>
+ 	<group ns="pioneer2dx">
+ 	<include file="$(find joy2twist)/launch/joy2twist.launch" />
+ 	<include file="$(find hector_mapping)/launch/mapping_default.launch" />
+ 	  <node  pkg="tf" type="static_transform_publisher" name="base_to_hokuyo" args="0 0 1.0 0 0 0 base_link hokuyo_link 100"/>
+	</group>
+
+</launch>
